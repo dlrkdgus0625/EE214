@@ -39,12 +39,6 @@ module PISO(
     cntr <= cntr + 1;
     end
     
-  //      if(save == 1)
-    //       tmp <= sw;
-//else if(load == 1)
-  //         Y = tmp<<cntr;
-          
-          
     always@(posedge(cntr[25]))
     begin 
     if (save == 1)
