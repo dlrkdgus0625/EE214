@@ -1,0 +1,103 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 11/10/2022 02:28:27 PM
+// Design Name: 
+// Module Name: wrapper
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module wrapper(
+    input clk,
+    //input [7:0] sw,
+    input [3:0] A,
+    input [3:0] B,
+    input cin,
+    //output [3:0] S,
+    //output [3:0] S,
+    output [6:0] out,
+    output [3:0] X,
+    output [3:0] led
+    
+    );
+    
+    
+    wire timing;
+    wire [4:0] Carry;
+    wire [3:0] S;
+    //assign led = result;
+    wire [16:0] bcdresult;
+    wire [1:0] annode;
+    
+    counter counter(
+        .clk(clk),
+        .rst(rst),
+        .out(timing),
+        .annode(annode)
+        );
+    
+    CLA CLA_add(
+    .A(A),
+    .B(B),
+    .S(S),
+    .Cout(Carry[4])
+    );
+    /*
+    CLA add_0(
+        .A(A[0]),
+        .B(B[0]),
+        .S(S[0]),
+        .Cout(Carry[0])
+        );
+    CLA add_1(
+        .A(A[1]),
+        .B(B[1]),
+        .cin(Carry[0]),
+        .S(S[1]),
+        .Cout(Carry[1])
+        );
+    CLA add_2(
+        .A(A[2]),
+        .B(B[2]),
+        .cin(Carry[1]),
+        .S(S[2]),
+        .Cout(Carry[2])
+        );
+    CLA add_3(
+        .A(A[3]),
+        .B(B[3]),
+        .cin(Carry[2]),
+        .S(S[3]),
+        .Cout(Carry[3])
+        );
+        
+  */
+        
+    bin2bcd bin2bcd(
+        .bin(S),
+        .bcd(bcdresult)
+        );
+        
+    seg seg(
+        .clk(timing),
+        .rst(rst),
+        .result(bcdresult),
+        .out(out),
+        .X(X),
+        .annode_active(annode)
+        );
+    
+endmodule
